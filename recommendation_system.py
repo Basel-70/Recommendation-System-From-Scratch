@@ -1,0 +1,68 @@
+"""
+Recommendation System From Scratch
+
+Created by: Basel Alzahrani
+
+This project is a simple implementation of a recommendation system
+using Matrix Factorization, Gradient Descent, and Loss Functions
+without relying on machine learning libraries such as Scikit-learn,
+TensorFlow, or PyTorch.
+
+The goal of this project is to understand how recommendation systems
+learn by manually implementing prediction, loss calculation,
+gradient computation, and weight updates.
+"""
+
+
+
+import numpy as np
+
+User = ["Basel","Taif","Mohannad"]
+Anime = ["Naruto", "Mushoku Tensei", "Attack on Titan"]
+
+ratings = np.array([[5,4, np.nan],
+                    [np.nan,5,4],
+                    [2,np.nan,5]])
+
+User_Weights = np.random.rand(3,2)
+Anime_Weights = np.random.rand(3,2)
+
+lr = 0.001
+epochs = 2500
+
+for epoch in range(epochs):
+   total_loss = 0
+
+   for i in range(len(User)):
+      for j in range(len(Anime)):
+
+         actual = ratings[i][j]
+
+         if np.isnan(actual):
+            continue
+
+         prediction = np.dot(User_Weights[i], Anime_Weights[j])
+
+         loss = (actual - prediction) ** 2
+         error = prediction - actual
+
+         gradient_User = 2 * error * Anime_Weights[j]
+         gradient_Anime = 2 * error * User_Weights[i]
+
+         User_Weights[i] = User_Weights[i] - lr * gradient_User
+         Anime_Weights[j] = Anime_Weights[j] - lr * gradient_Anime
+
+         total_loss += loss
+
+   if epoch % 100 == 0:
+      print("Epoch:", epoch, "Total Loss:", total_loss)
+
+
+print("\nPredictions after training:")
+
+for i in range(len(User)):
+   for j in range(len(Anime)):
+
+      prediction = np.dot(User_Weights[i], Anime_Weights[j])
+
+      print(User[i], "→", Anime[j], "=", round(prediction, 2))
