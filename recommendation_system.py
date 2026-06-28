@@ -58,11 +58,13 @@ for epoch in range(epochs):
       print("Epoch:", epoch, "Total Loss:", total_loss)
 
 
-print("\nPredictions after training:")
+print("\nPredictions for missing ratings:")
 
 for i in range(len(User)):
    for j in range(len(Anime)):
 
-      prediction = np.dot(User_Weights[i], Anime_Weights[j])
+      if np.isnan(ratings[i][j]):
+         prediction = np.dot(User_Weights[i], Anime_Weights[j])
+         prediction = np.clip(prediction, 1, 5)
 
-      print(User[i], "→", Anime[j], "=", round(prediction, 2))
+         print(User[i], "might rate", Anime[j], "=", round(prediction, 2))
