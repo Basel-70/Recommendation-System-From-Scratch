@@ -22,6 +22,7 @@ ratings = np.array([[5,4, np.nan],
                     [np.nan,5,4],
                     [2,np.nan,5]])
 
+np.random.seed(42)
 user_weights = np.random.rand(3,2)
 anime_weights = np.random.rand(3,2)
 
