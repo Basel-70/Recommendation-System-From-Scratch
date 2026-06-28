@@ -27,6 +27,7 @@ ratings = np.array([[5,4, np.nan],
 User_Weights = np.random.rand(3,2)
 Anime_Weights = np.random.rand(3,2)
 
+# Hyperparameters
 lr = 0.001
 epochs = 2500
 
@@ -38,17 +39,23 @@ for epoch in range(epochs):
 
          actual = ratings[i][j]
 
+        # Skip unknown ratings during training
          if np.isnan(actual):
             continue
 
+        # Predict the rating using the dot product
          prediction = np.dot(User_Weights[i], Anime_Weights[j])
 
          loss = (actual - prediction) ** 2
+       
+        # Calculate prediction error
          error = prediction - actual
 
+        # Compute gradients
          gradient_User = 2 * error * Anime_Weights[j]
          gradient_Anime = 2 * error * User_Weights[i]
 
+        # Update weights using Gradient Descent
          User_Weights[i] = User_Weights[i] - lr * gradient_User
          Anime_Weights[j] = Anime_Weights[j] - lr * gradient_Anime
 
@@ -59,6 +66,7 @@ for epoch in range(epochs):
 
 
 print("\nPredictions for missing ratings:")
+
 
 for i in range(len(User)):
    for j in range(len(Anime)):
